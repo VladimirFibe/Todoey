@@ -2,7 +2,14 @@ import SwiftUI
 
 class TodoListViewController: UITableViewController {
 
-    var items = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
+    var items: [String] {
+        get {
+            UserDefaults.standard.stringArray(forKey: "items") ?? []
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "items")
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Todo"
