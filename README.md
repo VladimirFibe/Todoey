@@ -5,3 +5,14 @@
 ```
 print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
 ```
+
+```
+    var items: [String] {
+        get {
+            UserDefaults.standard.stringArray(forKey: "items") ?? []
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "items")
+        }
+    }
+```

@@ -12,27 +12,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let controller = UINavigationController(rootViewController: TodoListViewController())
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
-        print(#function)
-    }
-    
-    func sceneDidDisconnect(_ scene: UIScene) {
-        print(#function)
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        print(#function)
-    }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-        print(#function)
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        print(#function)
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        print(#function)
     }
 }
 

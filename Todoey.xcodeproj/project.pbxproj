@@ -13,6 +13,7 @@
 		27ED51CB29CF0F14001F188A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27ED51CA29CF0F14001F188A /* Assets.xcassets */; };
 		27ED51CE29CF0F14001F188A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27ED51CC29CF0F14001F188A /* LaunchScreen.storyboard */; };
 		27ED51D629CF1BC5001F188A /* TodoListViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27ED51D529CF1BC5001F188A /* TodoListViewControllerRepresentable.swift */; };
+		27ED51D929CFE718001F188A /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27ED51D829CFE718001F188A /* Todo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		27ED51CF29CF0F14001F188A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27ED51D529CF1BC5001F188A /* TodoListViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		27ED51D729CF1F9A001F188A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		27ED51D829CFE718001F188A /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				27ED51C329CF0F12001F188A /* SceneDelegate.swift */,
 				27ED51C529CF0F12001F188A /* TodoListViewController.swift */,
 				27ED51D529CF1BC5001F188A /* TodoListViewControllerRepresentable.swift */,
+				27ED51D829CFE718001F188A /* Todo.swift */,
 				27ED51CA29CF0F14001F188A /* Assets.xcassets */,
 				27ED51CC29CF0F14001F188A /* LaunchScreen.storyboard */,
 				27ED51CF29CF0F14001F188A /* Info.plist */,
@@ -143,6 +146,7 @@
 				27ED51D629CF1BC5001F188A /* TodoListViewControllerRepresentable.swift in Sources */,
 				27ED51C229CF0F12001F188A /* AppDelegate.swift in Sources */,
 				27ED51C429CF0F12001F188A /* SceneDelegate.swift in Sources */,
+				27ED51D929CFE718001F188A /* Todo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

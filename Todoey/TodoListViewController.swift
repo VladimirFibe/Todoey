@@ -1,17 +1,20 @@
 import SwiftUI
 
 class TodoListViewController: UITableViewController {
-
-    var items: [String] {
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Todos.plist")
+    var todos: [Todo] {
         get {
-            UserDefaults.standard.stringArray(forKey: "items") ?? []
+            loadTodos()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "items")
+            saveTodos(newValue)
         }
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         title = "Todo"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
@@ -21,14 +24,15 @@ class TodoListViewController: UITableViewController {
     //MARK: - TableView DataSource Methods
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items.count
+        todos.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let title = items[indexPath.row]
+        let todo = todos[indexPath.row]
         var content = cell.defaultContentConfiguration()
-        content.text = title
+        content.text = todo.title
+        cell.accessoryType = todo.done ? .checkmark : .none
         cell.contentConfiguration = content
         return cell
     }
@@ -36,7 +40,8 @@ class TodoListViewController: UITableViewController {
     //MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        todos[indexPath.row].done.toggle()
+        tableView.cellForRow(at: indexPath)?.accessoryType = todos[indexPath.row].done ? .checkmark : .none
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -49,8 +54,7 @@ class TodoListViewController: UITableViewController {
                                       preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
             if let text = textField.text {
-                self.items.append(text)
-                self.tableView.reloadData()
+                self.todos.append(Todo(title: text, done: false))
             }
         }
         alert.addTextField { alertTextField in
@@ -60,6 +64,27 @@ class TodoListViewController: UITableViewController {
         alert.addAction(action)
         present(alert, animated: true)
     }
+    
+    private func loadTodos() -> [Todo] {
+        guard let data = try? Data(contentsOf: dataFilePath!) else { return []}
+        let decoder = PropertyListDecoder()
+        do {
+            return try decoder.decode([Todo].self, from: data)
+        } catch {
+            return []
+        }
+    }
+    private func saveTodos(_ newValue: [Todo]) {
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(newValue)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error encoding item array, \(error.localizedDescription)")
+        }
+        tableView.reloadData()
+    }
+    
 }
 
 struct TodoListViewControllerRepresentable_Previews: PreviewProvider {
