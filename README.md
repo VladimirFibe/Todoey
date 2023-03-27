@@ -16,3 +16,14 @@ print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, t
         }
     }
 ```
+
+```
+    var todos: [Todo] {
+        get {
+            loadTodos()
+        }
+        set {
+            saveTodos(newValue)
+        }
+    }
+```
