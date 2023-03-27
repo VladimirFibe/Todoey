@@ -23,10 +23,22 @@ public final class CoreDataMamanager: NSObject {
         appDelegate.saveContext()
     }
     
-    public func fetchPhotos() -> [Todo] {
+    public func fetchTodos() -> [Todo] {
+        return fetch(NSFetchRequest<NSFetchRequestResult>(entityName: "Todo"))
+    }
+    
+    public func search(title: String) -> [Todo] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Todo")
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", title)
+        fetchRequest.predicate = predicate
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        return fetch(fetchRequest)
+    }
+    
+    private func fetch(_ request: NSFetchRequest<NSFetchRequestResult>) -> [Todo] {
         do {
-            return (try? context.fetch(fetchRequest) as? [Todo]) ?? []
+            return (try? context.fetch(request) as? [Todo]) ?? []
         }
     }
 

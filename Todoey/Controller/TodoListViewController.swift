@@ -1,12 +1,18 @@
 import SwiftUI
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: UITableViewController, UISearchControllerDelegate {
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     var todos: [Todo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Todo"
+        let searchController = UISearchController()
+        searchController.isActive = true
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search recipes"
+        navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.searchController = searchController
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
         navigationItem.rightBarButtonItem = addButton
@@ -79,8 +85,25 @@ class TodoListViewController: UITableViewController {
         tableView.reloadData()
     }
     private func load() {
-        todos = CoreDataMamanager.shared.fetchPhotos()
+        todos = CoreDataMamanager.shared.fetchTodos()
         tableView.reloadData()
+    }
+}
+
+extension TodoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let title = searchBar.text else { return }
+        todos = CoreDataMamanager.shared.search(title: title)
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            self.load()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
     }
 }
 
