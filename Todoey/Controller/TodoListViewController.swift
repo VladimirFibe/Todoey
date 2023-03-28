@@ -9,7 +9,7 @@ class TodoListViewController: UITableViewController, UISearchControllerDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Todo"
+        title = selectedCategory?.name ?? ""
         let searchController = UISearchController()
         searchController.isActive = true
         searchController.searchBar.delegate = self
@@ -102,10 +102,10 @@ extension TodoListViewController: UISearchBarDelegate {
         }
     }
 }
-//
-//struct TodoListViewControllerRepresentable_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TodoListViewControllerRepresentable()
-//            .ignoresSafeArea()
-//    }
-//}
+
+struct TodoListViewControllerRepresentable_Previews: PreviewProvider {
+    static var previews: some View {
+        TodoListViewControllerRepresentable()
+            .ignoresSafeArea()
+    }
+}
