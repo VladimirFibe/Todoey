@@ -1,7 +1,10 @@
 import SwiftUI
 
 class TodoListViewController: UITableViewController, UISearchControllerDelegate {
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+
+    var selectedCategory: Category? {
+        didSet { load() }
+    }
     var todos: [Todo] = []
 
     override func viewDidLoad() {
@@ -10,13 +13,12 @@ class TodoListViewController: UITableViewController, UISearchControllerDelegate 
         let searchController = UISearchController()
         searchController.isActive = true
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Search recipes"
+        searchController.searchBar.placeholder = "Search todo"
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
         navigationItem.rightBarButtonItem = addButton
-        load()
     }
 
     //MARK: - TableView DataSource Methods
@@ -60,15 +62,9 @@ class TodoListViewController: UITableViewController, UISearchControllerDelegate 
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
             if let text = textField.text,
                 !text.isEmpty,
-               let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
-                let todo = Todo(context: context)
-                todo.title = text
+               let selectedCategory = self.selectedCategory,
+               let todo = CoreDataMamanager.shared.createTodo(withTitle: text, category: selectedCategory) {
                 self.todos.append(todo)
-                do {
-                    try context.save()
-                } catch {
-                    print("Error saving context: \(error.localizedDescription)")
-                }
                 self.tableView.reloadData()
             }
         }
@@ -85,7 +81,7 @@ class TodoListViewController: UITableViewController, UISearchControllerDelegate 
         tableView.reloadData()
     }
     private func load() {
-        todos = CoreDataMamanager.shared.fetchTodos()
+        todos = CoreDataMamanager.shared.fetchTodos(selectedCategory)
         tableView.reloadData()
     }
 }
@@ -93,7 +89,7 @@ class TodoListViewController: UITableViewController, UISearchControllerDelegate 
 extension TodoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let title = searchBar.text else { return }
-        todos = CoreDataMamanager.shared.search(title: title)
+        todos = CoreDataMamanager.shared.search(title: title, category: selectedCategory)
         tableView.reloadData()
     }
     
@@ -106,10 +102,10 @@ extension TodoListViewController: UISearchBarDelegate {
         }
     }
 }
-
-struct TodoListViewControllerRepresentable_Previews: PreviewProvider {
-    static var previews: some View {
-        TodoListViewControllerRepresentable()
-            .ignoresSafeArea()
-    }
-}
+//
+//struct TodoListViewControllerRepresentable_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TodoListViewControllerRepresentable()
+//            .ignoresSafeArea()
+//    }
+//}

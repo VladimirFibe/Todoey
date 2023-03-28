@@ -9,7 +9,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let controller = UINavigationController(rootViewController: TodoListViewController())
+        let controller = UINavigationController(rootViewController: CategoryTableViewController())
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
     }
